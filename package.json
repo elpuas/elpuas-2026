@@ -9,6 +9,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.14.1"
+    "@astrojs/partytown": "^2.1.4",
+    "astro": "^5.14.1",
+    "astro-icon": "^1.1.5"
   }
 }
