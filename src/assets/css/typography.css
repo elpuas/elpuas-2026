@@ -1,0 +1,28 @@
+/*
+  Fonts are bundled via Vite from /src/assets/fonts.
+  Use relative paths from this stylesheet so the dev server and build output resolve hashed URLs automatically.
+*/
+
+@font-face {
+    font-family: 'VC Nudge Trial';
+    src: url('../fonts/VCNudge-Bold.woff2') format('woff2');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'VC Nudge Trial';
+    src: url('../fonts/VCNudge-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'VC Nudge Trial';
+    src: url('../fonts/VCNudge-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}

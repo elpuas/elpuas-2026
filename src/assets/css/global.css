@@ -1,0 +1,68 @@
+@import url('./typography.css');
+:root {
+    --primary-color: #D8FF00;
+    --secondary-color: #5E6F00;
+    --font-family: 'VC Nudge Trial', sans-serif;
+    --font-size-base: 34px;
+    --font-size-md: 36px;
+    --font-size-lg: 48px;
+    --font-size-2x: clamp(4.5rem, 3.1875rem + 5vw, 6.9375rem);
+    --font-size-4x: clamp(6.625rem, 4.875rem + 6.6667vw, 9.875rem);
+    --font-size-sm: 24px;
+    --line-height-base: 1.2;
+    --wide-width: 1200px;
+    --padding-base: 32px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    font-weight: normal;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+
+    .main-frame {
+        max-width: var(--wide-width);
+        margin: 0 auto;
+        padding: var(--padding-base);
+    }
+}
+
+.skip-link {
+	position: absolute;
+	left: -999px;
+	top: auto;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.skip-link:focus {
+	left: 1rem;
+	top: 1rem;
+	width: auto;
+	height: auto;
+	padding: 0.5rem 1rem;
+	background: var(--secondary-color, #222);
+	color: var(--primary-color, #fff);
+	clip: auto;
+	clip-path: none;
+	z-index: 1000;
+	border-radius: var(--radius-md, 0.75rem);
+}
+
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	border: 0;
+}

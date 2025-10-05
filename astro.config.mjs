@@ -6,5 +6,14 @@ import partytown from '@astrojs/partytown';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [icon(), partytown()]
+  integrations: [
+    icon({
+      include: { ph: ['*'] }
+    }),
+    partytown({
+      config: {
+        forward: ['dataLayer.push']
+      }
+    })
+  ]
 });

@@ -1,0 +1,26 @@
+---
+/**
+ * Header component renders the global navigation with responsive controls.
+ */
+import NavigationLinks from './NavigationLinks.astro';
+import Hamburguer from './Hamburguer.astro';
+import Logo from './Logo.astro';
+import { sortedNavigationLinks } from '../lib/nav';
+
+import '../assets/css/components/header.css';
+import menuUrl from '../assets/js/menu.ts?url';
+const navId = 'primary-navigation';
+---
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header" data-site-header data-menu-state="closed">
+	<div class="site-header__inner">
+		<a class="site-header__brand" href="/">
+			<Logo />
+		</a>
+		<nav id={navId} class="site-nav" aria-label="Primary" data-menu-nav>
+			<NavigationLinks links={sortedNavigationLinks} />
+		</nav>
+		<Hamburguer targetId={navId} />
+	</div>
+</header>
+<script type="module" src={menuUrl}></script>

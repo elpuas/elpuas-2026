@@ -1,0 +1,70 @@
+---
+import '../assets/css/global.css';
+import fontBold from '../assets/fonts/VCNudge-Bold.woff2?url';
+import fontSemiBold from '../assets/fonts/VCNudge-SemiBold.woff2?url';
+import fontRegular from '../assets/fonts/VCNudge-Regular.woff2?url';
+import placeholderImage from '../assets/images/placeholder.png?url';
+
+interface ImageLike { src: string }
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string | ImageLike;
+  noIndex?: boolean;
+}
+
+const { title, description, image, noIndex = false } = Astro.props as Props;
+const canonical = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).toString()
+  : Astro.url.href;
+
+const resolvedImage = (source?: string | ImageLike) => {
+  if (!source) return placeholderImage;
+  if (typeof source === 'string') return source;
+  if (source?.src) return source.src;
+  return placeholderImage;
+};
+
+const imageUrl = resolvedImage(image);
+const GA_ID = import.meta.env.GA_ID;
+const analyticsInline = `window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments)}\ngtag('js', new Date());\ngtag('config', '${GA_ID}');`;
+---
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://www.youtube.com" />
+<link rel="preconnect" href="https://www.google.com" />
+<link rel="preload" href={fontBold} as="font" type="font/woff2" crossorigin="anonymous" />
+<link rel="preload" href={fontSemiBold} as="font" type="font/woff2" crossorigin="anonymous" />
+<link rel="preload" href={fontRegular} as="font" type="font/woff2" crossorigin="anonymous" />
+
+{noIndex && <meta name="robots" content="noindex, nofollow" />}
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={imageUrl} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+
+<style>
+  :root {
+    color-scheme: dark;
+    --primary-color: #333;
+    --secondary-color: #D8FF00;
+  }
+</style>
+
+<script
+  type="text/partytown"
+  async
+  src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+></script>
+<script type="text/partytown" set:html={analyticsInline}></script>

@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "@astrojs/partytown": "^2.1.4",
+    "@datocms/astro": "^0.6.4",
+    "@iconify-json/ph": "^1.2.2",
     "astro": "^5.14.1",
-    "astro-icon": "^1.1.5"
+    "astro-icon": "^1.1.5",
+    "graphql": "^16.9.0",
+    "motion": "^12.23.22"
   }
 }
