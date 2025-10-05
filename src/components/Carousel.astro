@@ -1,0 +1,176 @@
+---
+/**
+ * Carousel component powered by Swiper; render with client:idle for interactive slides.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+import '../assets/css/components/carousel.css';
+import carouselScript from '../assets/js/carousel.ts?url';
+
+type SlideImage = ImageMetadata | string;
+
+interface SlideItem {
+	title?: string;
+	description?: string;
+	image?: SlideImage;
+	alt?: string;
+	content?: string;
+}
+
+interface Props {
+	slides?: SlideItem[];
+	showArrows?: boolean;
+	showPagination?: boolean;
+	loop?: boolean;
+	autoplayMs?: number;
+	centered?: boolean;
+	slidesPerView?: number | 'auto';
+	spaceBetween?: number;
+	responsive?: Record<string, unknown>;
+	ariaLabel?: string;
+	heading?: string;
+	subheading?: string;
+	id?: string;
+}
+
+const props = Astro.props as Props;
+const {
+	slides = [],
+	showArrows = true,
+	showPagination = true,
+	loop = false,
+	autoplayMs,
+	centered = false,
+	slidesPerView = 1,
+	spaceBetween,
+	responsive,
+	ariaLabel,
+	heading,
+	subheading,
+	id
+} = props;
+
+const slidesData = Array.isArray(slides) && slides.length > 0 ? slides : null;
+
+const carouselId = id ?? `carousel-${Math.random().toString(36).slice(2, 9)}`;
+
+const options = {
+	loop,
+	autoplay: typeof autoplayMs === 'number' && autoplayMs > 0 ? autoplayMs : null,
+	centered,
+	slidesPerView,
+	spaceBetween,
+	breakpoints: responsive,
+	showArrows,
+	showPagination
+};
+
+const serializedOptions = JSON.stringify(options);
+const paginationEnabled = Boolean(showPagination);
+const arrowsEnabled = Boolean(showArrows);
+const regionLabel = ariaLabel || 'Carousel';
+const liveRegion = options.autoplay ? 'polite' : undefined;
+---
+<section
+	class="carousel"
+	role="region"
+	aria-label={regionLabel}
+	data-carousel-root
+	data-carousel-options={serializedOptions}
+>
+	{(heading || subheading) && (
+		<header class="carousel__header">
+			{heading && <h2 class="carousel__title">{heading}</h2>}
+			{subheading && <p class="carousel__subtitle">{subheading}</p>}
+			{arrowsEnabled && (
+				<div class="carousel__actions">
+					<button
+						type="button"
+						class="carousel__button"
+						data-carousel-prev
+						aria-label="Previous slide"
+						aria-controls={carouselId}
+					>
+						<span class="carousel__icon" aria-hidden="true">‹</span>
+					</button>
+					<button
+						type="button"
+						class="carousel__button"
+						data-carousel-next
+						aria-label="Next slide"
+						aria-controls={carouselId}
+					>
+						<span class="carousel__icon" aria-hidden="true">›</span>
+					</button>
+				</div>
+			)}
+		</header>
+	)}
+	<div class="carousel__viewport">
+		<div class="swiper" id={carouselId} aria-roledescription="carousel" aria-live={liveRegion}>
+			<div class="swiper-wrapper">
+				{slidesData
+					? slidesData.map((slide) => {
+						const altText = slide.alt || slide.title || regionLabel;
+						const isMetadata = typeof slide.image === 'object' && slide.image !== null && 'src' in slide.image;
+						const imageSrc = typeof slide.image === 'string' ? slide.image : undefined;
+						return (
+							<div class="swiper-slide">
+								{slide.image && (
+									<div class="carousel__media">
+										{isMetadata ? (
+											<Image
+												src={slide.image as ImageMetadata}
+												alt={altText}
+												loading="lazy"
+												decoding="async"
+												class="carousel__image"
+											/>
+										) : (
+											<img
+												src={imageSrc}
+												alt={altText}
+												loading="lazy"
+												decoding="async"
+												class="carousel__image"
+											/>
+										)}
+									</div>
+								)}
+								{slide.title && <h3 class="carousel__slide-title">{slide.title}</h3>}
+								{slide.description && <p class="carousel__slide-text">{slide.description}</p>}
+								{slide.content && <p class="carousel__slide-text">{slide.content}</p>}
+							</div>
+						);
+					})
+					: <slot />}
+			</div>
+			{paginationEnabled && <div class="carousel__pagination" data-carousel-pagination></div>}
+		</div>
+		{arrowsEnabled && !(heading || subheading) && (
+			<div class="carousel__actions">
+				<button
+					type="button"
+					class="carousel__button"
+					data-carousel-prev
+					aria-label="Previous slide"
+					aria-controls={carouselId}
+				>
+					<span class="carousel__icon" aria-hidden="true">‹</span>
+				</button>
+				<button
+					type="button"
+					class="carousel__button"
+					data-carousel-next
+					aria-label="Next slide"
+					aria-controls={carouselId}
+				>
+					<span class="carousel__icon" aria-hidden="true">›</span>
+				</button>
+			</div>
+		)}
+	</div>
+</section>
+
+<script type="module" src={carouselScript}></script>

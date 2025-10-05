@@ -1,21 +1,16 @@
 ---
 const today = new Date();
+import '../assets/css/components/footer.css';
 ---
 
 <footer>
     <div class="footer__columns">
         <div class="footer__column">
-            <h2 class="footer__heading">About</h2>
-            <p class="footer__text">
-                El Puas is a personal blog where I share my thoughts, experiences, and projects related to web development, technology, and more.
-            </p>
+            <h3 class="footer__heading">Do you have a website project? <br /><a href="https://elpuasdigitalcrafts.com/" target="_blank">Let's talk.</a></h3>
         </div>
         <div class="footer__column">
             <h2 class="footer__heading">Listen</h2>
-            <div class="footer__copyright">
-                &copy; {today.getFullYear()} ElPuas. All rights reserved.
-            </div>
-            <div class="social-links">
+                        <div class="social-links">
                 <a href="https://profiles.wordpress.org/elpuas/" target="_blank">
                     <span class="sr-only">Follow el Puas on WordPress</span>
                     <svg
@@ -43,6 +38,9 @@ const today = new Date();
                         ></path></svg
                     >
                 </a>
+            </div>
+            <div class="footer__copyright">
+                &copy; {today.getFullYear()} ElPuas. All rights reserved.
             </div>
         </div>
     </div>
