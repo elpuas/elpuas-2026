@@ -2,15 +2,33 @@
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import heroGraphic from '../assets/background.svg';
+import Button from '../components/Button.astro';
+import demoWebm from '../assets/videos/sample-video.webm?url';
+import posterImage from '../assets/images/placeholder.png?url';
+import VideoBlock from '../components/Video.astro';
+import '../assets/css/pages/index.css';
 ---
 
 <Layout title='Home' description='Welcome to my Astro site'>
 	<Hero
     title="I code digital crafts for humans."
     subtitle="I specialize in modern WordPress development and JAMStack architectures."
-    ctaLabel="Let's talk"
-    ctaHref="/lets-talk"
     image={heroGraphic}
     showImage
   />
+  <section class="with-scroll-video columns">
+    <div class="content column-half">
+      <h3 class="text text-xl">What I Do.</h3>
+      <p class="text text-xl">I focus on modern WordPress development, explore JAMStack with React to build fast and scalable sites, and experiment with AI to shape new workflows and tools.</p>
+      <Button label="Learn more" href="/about" ariaLabel="Learn more about me" />
+    </div>
+    <div class="scroll-video-container column-half">
+      <VideoBlock
+        srcWebm={demoWebm}
+        poster={posterImage}
+        controls
+        ariaLabel='Hero reel preview'
+		/>
+    </div>
+  </section>
 </Layout>

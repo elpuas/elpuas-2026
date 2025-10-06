@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import BaseVideo from '../../components/BaseVideo.astro';
+import VideoBlock from '../../components/Video.astro';
 import demoWebm from '../../assets/videos/sample-video.webm?url';
 import demoMp4 from '../../assets/videos/sample-video.mp4?url';
 import posterImage from '../../assets/images/placeholder.png?url';
@@ -11,7 +11,7 @@ import posterImage from '../../assets/images/placeholder.png?url';
 		<h1>BaseVideo component playground</h1>
 		<p>These examples show the base video wrapper with optional poster, fallback sources, and captions.</p>
 
-		<BaseVideo
+		<VideoBlock
 			srcWebm={demoWebm}
 			poster={posterImage}
 			controls
@@ -19,7 +19,7 @@ import posterImage from '../../assets/images/placeholder.png?url';
 			caption='WebM-only video with poster and controls.'
 		/>
 
-		<BaseVideo
+		<Video
 			srcWebm={demoWebm}
 			srcMp4={demoMp4}
 			muted

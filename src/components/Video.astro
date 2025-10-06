@@ -1,6 +1,6 @@
 ---
 /**
- * BaseVideo renders a responsive HTML5 video with accessible defaults.
+ * Video renders a responsive HTML5 video with accessible defaults.
  */
 import '../assets/css/components/video.css';
 
@@ -31,7 +31,7 @@ const {
 } = Astro.props as Props;
 
 if (!srcWebm) {
-	throw new Error('BaseVideo requires a srcWebm prop pointing to a .webm asset');
+	throw new Error('Video requires a srcWebm prop pointing to a .webm asset');
 }
 
 const mutedAttr = muted !== false;
