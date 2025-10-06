@@ -1,0 +1,32 @@
+---
+/**
+ * NavigationLinks renders the primary navigation list using the shared nav model.
+ */
+import type { NavLink } from '../lib/nav';
+import { sortedNavigationLinks } from '../lib/nav';
+
+interface Props {
+	links?: NavLink[];
+	variant?: 'primary' | 'mobile';
+}
+
+const { links = sortedNavigationLinks, variant = 'primary' } = Astro.props as Props;
+const normalized = (href: string) => href.replace(/\/?$/, '') || '/';
+const currentPath = normalized(Astro.url.pathname);
+---
+<ul class={`nav-list nav-list--${variant}`}>
+	{links.map((link) => {
+		const isActive = normalized(link.href) === currentPath;
+		return (
+			<li class="nav-list__item">
+				<a
+					href={link.href}
+					class={`nav-list__link${isActive ? ' is-active' : ''}`}
+					aria-current={isActive ? 'page' : undefined}
+				>
+					{link.title}
+				</a>
+			</li>
+		);
+	})}
+</ul>

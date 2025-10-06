@@ -1,0 +1,27 @@
+---
+/**
+ * Hamburguer renders the mobile navigation toggle button linked to the nav list.
+ */
+interface Props {
+	targetId: string;
+}
+
+const { targetId } = Astro.props as Props;
+const defaultExpanded = false;
+const openLabel = 'Open menu';
+const closeLabel = 'Close menu';
+---
+<button
+	class="hamburger"
+	type="button"
+	aria-controls={targetId}
+	aria-expanded={defaultExpanded}
+	aria-label={openLabel}
+	data-menu-toggle
+	data-open-label={openLabel}
+	data-close-label={closeLabel}
+>
+	<span class="patty" aria-hidden="true"></span>
+	<span class="patty" aria-hidden="true"></span>
+	<span class="patty" aria-hidden="true"></span>
+</button>
