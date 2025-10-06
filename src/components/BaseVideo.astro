@@ -1,0 +1,62 @@
+---
+/**
+ * BaseVideo renders a responsive HTML5 video with accessible defaults.
+ */
+import '../assets/css/components/video.css';
+
+interface Props {
+	srcWebm: string;
+	srcMp4?: string;
+	poster?: string;
+	muted?: boolean;
+	playsInline?: boolean;
+	controls?: boolean;
+	loop?: boolean;
+	autoplay?: boolean;
+	ariaLabel?: string;
+	caption?: string;
+}
+
+const {
+	srcWebm,
+	srcMp4,
+	poster,
+	muted = true,
+	playsInline = true,
+	controls = false,
+	loop = false,
+	autoplay = false,
+	ariaLabel,
+	caption
+} = Astro.props as Props;
+
+if (!srcWebm) {
+	throw new Error('BaseVideo requires a srcWebm prop pointing to a .webm asset');
+}
+
+const mutedAttr = muted !== false;
+const playsInlineAttr = playsInline !== false;
+const autoplayAttr = Boolean(autoplay);
+const controlsAttr = Boolean(controls);
+const loopAttr = Boolean(loop);
+const regionLabel = ariaLabel || 'Video content';
+---
+<section class="video-section" role="region" aria-label={regionLabel}>
+	<div class="video-frame">
+		<video
+			preload="metadata"
+			muted={mutedAttr ? true : undefined}
+			playsinline={playsInlineAttr ? true : undefined}
+			loop={loopAttr ? true : undefined}
+			autoplay={autoplayAttr ? true : undefined}
+			controls={controlsAttr ? true : undefined}
+			poster={poster}
+			aria-label={regionLabel}
+		>
+			<source src={srcWebm} type="video/webm" />
+			{srcMp4 && <source src={srcMp4} type="video/mp4" />}
+			Your browser does not support HTML5 video.
+		</video>
+	</div>
+	{caption && <p class="video-caption">{caption}</p>}
+</section>

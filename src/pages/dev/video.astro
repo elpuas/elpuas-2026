@@ -1,0 +1,32 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BaseVideo from '../../components/BaseVideo.astro';
+import demoWebm from '../../assets/videos/sample-video.webm?url';
+import demoMp4 from '../../assets/videos/sample-video.mp4?url';
+import posterImage from '../../assets/images/placeholder.png?url';
+---
+
+<Layout title='Video Demo' description='Development showcase for the BaseVideo component'>
+	<section class="main-frame">
+		<h1>BaseVideo component playground</h1>
+		<p>These examples show the base video wrapper with optional poster, fallback sources, and captions.</p>
+
+		<BaseVideo
+			srcWebm={demoWebm}
+			poster={posterImage}
+			controls
+			ariaLabel='Hero reel preview'
+			caption='WebM-only video with poster and controls.'
+		/>
+
+		<BaseVideo
+			srcWebm={demoWebm}
+			srcMp4={demoMp4}
+			muted
+			loop
+			autoplay
+			ariaLabel='Looping background video'
+			caption='WebM with MP4 fallback, muted autoplay loop.'
+		/>
+	</section>
+</Layout>
