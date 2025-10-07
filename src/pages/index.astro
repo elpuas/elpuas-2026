@@ -6,6 +6,7 @@ import Button from '../components/Button.astro';
 import demoWebm from '../assets/videos/sample-video.webm?url';
 import posterImage from '../assets/images/placeholder.png?url';
 import VideoBlock from '../components/Video.astro';
+import visibilityAutoplayScript from '../assets/js/visibility-autoplay-video.ts?url'
 import '../assets/css/pages/index.css';
 ---
 
@@ -24,11 +25,13 @@ import '../assets/css/pages/index.css';
     </div>
     <div class="scroll-video-container column-half">
       <VideoBlock
-        srcWebm={demoWebm}
-        poster={posterImage}
-        controls
-        ariaLabel='Hero reel preview'
+			srcWebm={demoWebm}
+			poster={posterImage}
+			ariaLabel='Visibility-based autoplay video'
+			caption='When at least 30% of this frame is visible it starts; dropping below 20% pauses it.'
+			visibilityAutoplay={true}
 		/>
     </div>
   </section>
+  <script type='module' src={visibilityAutoplayScript}></script>
 </Layout>

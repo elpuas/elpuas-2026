@@ -1,32 +1,33 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import VideoBlock from '../../components/Video.astro';
-import demoWebm from '../../assets/videos/sample-video.webm?url';
-import demoMp4 from '../../assets/videos/sample-video.mp4?url';
-import posterImage from '../../assets/images/placeholder.png?url';
+import Layout from '../../layouts/Layout.astro'
+import VideoBlock from '../../components/Video.astro'
+import demoWebm from '../../assets/videos/sample-video.webm?url'
+import demoMp4 from '../../assets/videos/sample-video.mp4?url'
+import posterImage from '../../assets/images/placeholder.png?url'
+import visibilityAutoplayScript from '../../assets/js/visibility-autoplay-video.ts?url'
 ---
 
-<Layout title='Video Demo' description='Development showcase for the BaseVideo component'>
-	<section class="main-frame">
-		<h1>BaseVideo component playground</h1>
-		<p>These examples show the base video wrapper with optional poster, fallback sources, and captions.</p>
+<Layout title='Video Demo' description='Development showcase for visibility autoplay'>
+	<section class='main-frame'>
+		<h1>Video autoplay demo</h1>
+		<p>These examples show visibility-triggered playback with muted looping videos.</p>
 
 		<VideoBlock
 			srcWebm={demoWebm}
 			poster={posterImage}
 			controls
-			ariaLabel='Hero reel preview'
-			caption='WebM-only video with poster and controls.'
+			ariaLabel='Manual controls example'
+			caption='Standard video block with controls for comparison.'
 		/>
 
-		<Video
+		<VideoBlock
 			srcWebm={demoWebm}
 			srcMp4={demoMp4}
-			muted
-			loop
-			autoplay
-			ariaLabel='Looping background video'
-			caption='WebM with MP4 fallback, muted autoplay loop.'
+			poster={posterImage}
+			ariaLabel='Visibility-based autoplay video'
+			caption='When at least 30% of this frame is visible it starts; dropping below 20% pauses it.'
+			visibilityAutoplay={true}
 		/>
 	</section>
+	<script type='module' src={visibilityAutoplayScript}></script>
 </Layout>
