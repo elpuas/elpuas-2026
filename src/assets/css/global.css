@@ -130,3 +130,9 @@ body {
         line-height: var(--line-height-base);
     }
 }
+
+.alignfull {
+	margin: 32px calc(50% - 50vw);
+	max-width: 100vw;
+	width: 100vw;
+}

@@ -4,7 +4,6 @@
  */
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-
 import '../assets/css/components/carousel.css';
 import carouselScript from '../assets/js/carousel.ts?url';
 
@@ -33,6 +32,7 @@ interface Props {
 	heading?: string;
 	subheading?: string;
 	id?: string;
+	className?: string;
 }
 
 const props = Astro.props as Props;
@@ -49,7 +49,8 @@ const {
 	ariaLabel,
 	heading,
 	subheading,
-	id
+	id,
+	className
 } = props;
 
 const slidesData = Array.isArray(slides) && slides.length > 0 ? slides : null;
@@ -74,7 +75,7 @@ const regionLabel = ariaLabel || 'Carousel';
 const liveRegion = options.autoplay ? 'polite' : undefined;
 ---
 <section
-	class="carousel"
+	class={`carousel ${className ? ` ${className}` : ''}`}
 	role="region"
 	aria-label={regionLabel}
 	data-carousel-root
@@ -84,28 +85,6 @@ const liveRegion = options.autoplay ? 'polite' : undefined;
 		<header class="carousel__header">
 			{heading && <h2 class="carousel__title">{heading}</h2>}
 			{subheading && <p class="carousel__subtitle">{subheading}</p>}
-			{arrowsEnabled && (
-				<div class="carousel__actions">
-					<button
-						type="button"
-						class="carousel__button"
-						data-carousel-prev
-						aria-label="Previous slide"
-						aria-controls={carouselId}
-					>
-						<span class="carousel__icon" aria-hidden="true">‹</span>
-					</button>
-					<button
-						type="button"
-						class="carousel__button"
-						data-carousel-next
-						aria-label="Next slide"
-						aria-controls={carouselId}
-					>
-						<span class="carousel__icon" aria-hidden="true">›</span>
-					</button>
-				</div>
-			)}
 		</header>
 	)}
 	<div class="carousel__viewport">
@@ -159,7 +138,37 @@ const liveRegion = options.autoplay ? 'polite' : undefined;
 					})
 					: <slot />}
 			</div>
-			{paginationEnabled && <div class="carousel__pagination" data-carousel-pagination></div>}
+			{arrowsEnabled && (
+				<div class="carousel__actions">
+					<button
+						type="button"
+						class="carousel__button"
+						data-carousel-prev
+						aria-label="Previous slide"
+						aria-controls={carouselId}
+					>
+						<span class="carousel__icon" aria-hidden="true">
+							<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72" fill="none">
+							<path d="M36 60L40.23 55.77L23.49 39L60 39L60 33L23.49 33L40.23 16.23L36 12L12 36L36 60Z" fill="currentColor"/>
+							</svg>
+						</span>
+					</button>
+					{paginationEnabled && <div class="carousel__pagination" data-carousel-pagination></div>}
+					<button
+						type="button"
+						class="carousel__button"
+						data-carousel-next
+						aria-label="Next slide"
+						aria-controls={carouselId}
+					>
+						<span class="carousel__icon" aria-hidden="true">
+							<svg xmlns="http://www.w3.org/2000/svg" width="73" height="72" viewBox="0 0 73 72" fill="none">
+							<path d="M36.5 12L32.27 16.23L49.01 33H12.5V39H49.01L32.27 55.77L36.5 60L60.5 36L36.5 12Z" fill="currentColor"/>
+							</svg>
+						</span>
+					</button>
+				</div>
+			)}
 		</div>
 		{arrowsEnabled && !(heading || subheading) && (
 			<div class="carousel__actions">

@@ -6,8 +6,35 @@ import Button from '../components/Button.astro';
 import demoWebm from '../assets/videos/sample-video.webm?url';
 import posterImage from '../assets/images/placeholder.png?url';
 import VideoBlock from '../components/Video.astro';
+import CarouselComponent from '../components/Carousel.astro';
 import visibilityAutoplayScript from '../assets/js/visibility-autoplay-video.ts?url'
+import { getAllArticles, getExcerpt } from '../lib/datocms';
 import '../assets/css/pages/index.css';
+
+const articles = await getAllArticles();
+
+const blogSlides = (articles ?? [])
+	.filter((article) => article?.slug && article?.featuredImage?.responsiveImage?.src)
+	.sort((a, b) => {
+		const dateA = a?.articleDisplayDate ? new Date(a.articleDisplayDate).getTime() : 0;
+		const dateB = b?.articleDisplayDate ? new Date(b.articleDisplayDate).getTime() : 0;
+		return dateB - dateA;
+	})
+	.slice(0, 5)
+		.map((article) => {
+			const responsiveImage = article?.featuredImage?.responsiveImage;
+			const rawDescription = getExcerpt(article?._seoMetaTags ?? []);
+			const description = rawDescription || 'Read the full story on the blog.';
+			const altText = responsiveImage?.alt || article?.featuredImage?.title || article?.title || 'Blog article image';
+			return {
+				title: article?.title ?? 'Untitled article',
+				description,
+				image: responsiveImage?.src as string,
+				alt: altText,
+				url: `/blog/${article?.slug}`
+			};
+		});
+
 ---
 
 <Layout title='Home' description='Welcome to my Astro site'>
@@ -33,5 +60,21 @@ import '../assets/css/pages/index.css';
 		/>
     </div>
   </section>
+  <CarouselComponent
+    heading='Latest from the blog'
+    subheading='Thoughts on code, the web, and experiments.'
+    className='alignfull'
+    slides={blogSlides}
+    showArrows
+    centered
+    loop
+    showPagination
+    spaceBetween={90}
+    responsive={{
+      "768": { "slidesPerView": 1 },
+      "1024": { "slidesPerView": 1.5, "spaceBetween": 45 },
+      "1440": { "slidesPerView": 1.5, "spaceBetween": 90 }
+    }}
+  />
   <script type='module' src={visibilityAutoplayScript}></script>
 </Layout>
