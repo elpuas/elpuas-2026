@@ -22,6 +22,18 @@ const imageSlides = [
 		description: 'Craft narratives that move as fast as your users scroll.',
 		image: heroGraphic,
 		alt: 'Abstract storytelling graphic.'
+	},
+	{
+		title: 'Immersive storytelling',
+		description: 'Craft narratives that move as fast as your users scroll.',
+		image: heroGraphic,
+		alt: 'Abstract storytelling graphic.'
+	},
+	{
+		title: 'Immersive storytelling',
+		description: 'Craft narratives that move as fast as your users scroll.',
+		image: heroGraphic,
+		alt: 'Abstract storytelling graphic.'
 	}
 ];
 ---
@@ -37,13 +49,14 @@ const imageSlides = [
 			slides={imageSlides}
 			showArrows
 			showPagination
+			centered
 			loop
 			autoplayMs={6000}
 			spaceBetween={24}
 			responsive={{
-				"768": { "slidesPerView": 1.1 },
-				"1024": { "slidesPerView": 1.5, "spaceBetween": 32 },
-				"1440": { "slidesPerView": 2, "spaceBetween": 40 }
+				"768": { "slidesPerView": 1 },
+				"1024": { "slidesPerView": 1.5, "spaceBetween": 16 },
+				"1440": { "slidesPerView": 1.5, "spaceBetween": 16 }
 			}}
 		/>
 

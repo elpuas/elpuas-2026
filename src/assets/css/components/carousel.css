@@ -79,15 +79,9 @@
 }
 
 .swiper-slide {
-	background: var(--primary-color, #d8ff00);
-	color: var(--secondary-color, #111);
-	border-radius: var(--radius-lg, 1.25rem);
-	padding: calc(var(--padding-base, 32px) / 1.5);
 	display: flex;
 	flex-direction: column;
 	gap: calc(var(--padding-base, 32px) / 3);
-	box-shadow: 0 1.25rem 2.5rem rgba(0, 0, 0, 0.08);
-	min-height: 16rem;
 }
 
 .carousel__media {

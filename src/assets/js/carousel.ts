@@ -9,6 +9,19 @@ import 'swiper/css/pagination';
 let SwiperCtor: typeof import('swiper').Swiper | undefined;
 let moduleCache: typeof import('swiper/modules') | undefined;
 
+type CarouselOptions = {
+	autoplay?: number;
+	loop?: boolean;
+	slidesPerView?: number | 'auto';
+	spaceBetween?: number;
+	centeredSlides?: boolean;
+	centered?: boolean;
+	showArrows?: boolean;
+	showPagination?: boolean;
+	breakpoints?: SwiperOptions['breakpoints'];
+	initialSlide?: number;
+};
+
 const loadSwiper = async () => {
 	if (SwiperCtor && moduleCache) {
 		return { Swiper: SwiperCtor, modules: moduleCache };
@@ -22,10 +35,10 @@ const loadSwiper = async () => {
 	return { Swiper, modules };
 };
 
-const parseOptions = (value?: string) => {
+const parseOptions = (value?: string): CarouselOptions => {
 	if (!value) return {};
 	try {
-		return JSON.parse(value);
+		return JSON.parse(value) as CarouselOptions;
 	} catch (error) {
 		console.warn('Carousel: failed to parse options', error);
 		return {};
@@ -41,7 +54,7 @@ const initCarousel = async (root: HTMLElement) => {
 	const optionsData = parseOptions(root.dataset.carouselOptions);
 	const { Navigation, Pagination, A11y, Autoplay } = modules;
 	const moduleList = [Navigation, Pagination, A11y];
-	const autoplayDelay = optionsData.autoplay ?? null;
+	const autoplayDelay = optionsData.autoplay ?? 0;
 	const autoplayEnabled = Boolean(autoplayDelay) && !prefersReducedMotion.matches;
 	if (autoplayDelay && Autoplay) {
 		moduleList.push(Autoplay);
