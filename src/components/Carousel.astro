@@ -16,6 +16,7 @@ interface SlideItem {
 	image?: SlideImage;
 	alt?: string;
 	content?: string;
+	url?: string;
 }
 
 interface Props {
@@ -115,8 +116,9 @@ const liveRegion = options.autoplay ? 'polite' : undefined;
 						const altText = slide.alt || slide.title || regionLabel;
 						const isMetadata = typeof slide.image === 'object' && slide.image !== null && 'src' in slide.image;
 						const imageSrc = typeof slide.image === 'string' ? slide.image : undefined;
-						return (
-							<div class="swiper-slide">
+						const linkTarget = slide.title || altText || regionLabel;
+						const slideContent = (
+							<>
 								{slide.image && (
 									<div class="carousel__media">
 										{isMetadata ? (
@@ -141,6 +143,17 @@ const liveRegion = options.autoplay ? 'polite' : undefined;
 								{slide.title && <h3 class="carousel__slide-title">{slide.title}</h3>}
 								{slide.description && <p class="carousel__slide-text">{slide.description}</p>}
 								{slide.content && <p class="carousel__slide-text">{slide.content}</p>}
+							</>
+						);
+						return (
+							<div class="swiper-slide">
+								{slide.url
+									? (
+										<a href={slide.url} aria-label={`Read more about ${linkTarget}`}>
+											{slideContent}
+										</a>
+									)
+									: slideContent}
 							</div>
 						);
 					})

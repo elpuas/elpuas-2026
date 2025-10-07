@@ -172,3 +172,11 @@ export async function getAllArticles(): Promise<DatoArticleRecord[]> {
 }
 
 export const renderMetaTags = renderMetaTagsToString
+
+export function getArticleDescription(article?: DatoArticleRecord): string | undefined {
+	if (!article?._seoMetaTags) return undefined
+	const descriptionTag = article._seoMetaTags.find((tag) => tag?.attributes?.name === 'description')
+	return descriptionTag?.content
+}
+
+export type { DatoArticleRecord }
