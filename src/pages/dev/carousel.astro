@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import CarouselComponent from '../../components/Carousel.astro';
-import { getAllArticles, getArticleDescription } from '../../lib/datocms';
+import { getAllArticles, getExcerpt } from '../../lib/datocms';
 import heroGraphic from '../../assets/background.svg';
 import placeholder from '../../assets/images/placeholder.png';
 
@@ -48,18 +48,19 @@ const blogSlides = (articles ?? [])
 		return dateB - dateA;
 	})
 	.slice(0, 5)
-	.map((article) => {
-		const responsiveImage = article?.featuredImage?.responsiveImage;
-		const description = getArticleDescription(article);
-		const altText = responsiveImage?.alt || article?.featuredImage?.title || article?.title || 'Blog article image';
-		return {
-			title: article?.title ?? 'Untitled article',
-			...(description ? { description } : {}),
-			image: responsiveImage?.src as string,
-			alt: altText,
-			url: `/blog/${article?.slug}`
-		};
-	});
+		.map((article) => {
+			const responsiveImage = article?.featuredImage?.responsiveImage;
+			const rawDescription = getExcerpt(article?._seoMetaTags ?? []);
+			const description = rawDescription || 'Read the full story on the blog.';
+			const altText = responsiveImage?.alt || article?.featuredImage?.title || article?.title || 'Blog article image';
+			return {
+				title: article?.title ?? 'Untitled article',
+				description,
+				image: responsiveImage?.src as string,
+				alt: altText,
+				url: `/blog/${article?.slug}`
+			};
+		});
 ---
 
 <Layout title='Carousel Demo' description='Development showcase for the Carousel component'>
