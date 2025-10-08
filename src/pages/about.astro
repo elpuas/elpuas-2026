@@ -1,7 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Button from '../components/Button.astro';
 ---
 
-<Layout>
-	<h1>Soy About</h1>
+<Layout title='About' description='About ElPuas' >
+	<Hero
+		title="About Me."
+		subtitle="I’m Alfredo Navas, web engineer passionate about building with WordPress, the JAMStack, and experimenting with AI. For the last 15 years I’ve been creating digital products, supporting startups, and collaborating with communities around the world."
+	/>
+	<section class="with-scroll-video columns">
+		<div class="content column-half">
+			
+		</div>
+		<div class="column-half">
+			<p class="text text-lg">I believe in accessibility, usability, and consistency. My goal is not just to make things look good, but to make them work beautifully for everyone. Being self-taught has shaped the way I approach technology: I’m always learning, always experimenting, and eager to share that knowledge with others.</p>
+			<p class="text text-lg">Over the years I’ve spoken at WordCamps and meetups across Latin America, the United States, and Europe. I’ve collaborated with agencies like WebDevStudios, and together with my wife I run a small development boutique in Costa Rica, where we focus on building thoughtful, functional solutions for clients.</p>
+			<Button label="Learn more" href="/about" ariaLabel="Learn more about me" />
+		</div>
+	</section>
 </Layout>
