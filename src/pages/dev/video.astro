@@ -2,7 +2,6 @@
 import Layout from '../../layouts/Layout.astro'
 import VideoBlock from '../../components/Video.astro'
 import demoWebm from '../../assets/videos/sample-video.webm?url'
-import demoMp4 from '../../assets/videos/sample-video.mp4?url'
 import posterImage from '../../assets/images/placeholder.png?url'
 import visibilityAutoplayScript from '../../assets/js/visibility-autoplay-video.ts?url'
 ---
@@ -22,7 +21,6 @@ import visibilityAutoplayScript from '../../assets/js/visibility-autoplay-video.
 
 		<VideoBlock
 			srcWebm={demoWebm}
-			srcMp4={demoMp4}
 			poster={posterImage}
 			ariaLabel='Visibility-based autoplay video'
 			caption='When at least 30% of this frame is visible it starts; dropping below 20% pauses it.'
