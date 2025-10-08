@@ -11,16 +11,16 @@ const focusSelectors = [
 ].join(',');
 
 const init = () => {
-	const header = document.querySelector<HTMLElement>('[data-site-header]');
+	const header = document.querySelector('[data-site-header]');
 	if (!header || header.dataset.menuBound === 'true') return;
 
 	header.dataset.menuBound = 'true';
 	header.dataset.menuState = header.dataset.menuState || 'closed';
 
-	const toggle = header.querySelector<HTMLButtonElement>('[data-menu-toggle]');
-	const nav = header.querySelector<HTMLElement>('[data-menu-nav]');
-	const navLinks = Array.from(nav?.querySelectorAll<HTMLAnchorElement>('a[href]') || []);
-	let previousFocus: HTMLElement | null = null;
+	const toggle = header.querySelector('[data-menu-toggle]');
+	const nav = header.querySelector('[data-menu-nav]');
+	const navLinks = Array.from(nav?.querySelectorAll('a[href]') || []);
+	let previousFocus = null;
 
 	if (!toggle || !nav) return;
 
@@ -38,7 +38,7 @@ const init = () => {
 		close: toggle.dataset.closeLabel || 'Close menu'
 	});
 
-	const setState = (open: boolean) => {
+	const setState = (open) => {
 		header.dataset.menuState = open ? 'open' : 'closed';
 		toggle.setAttribute('aria-expanded', String(open));
 		toggle.classList.toggle('is-active', open);
@@ -49,7 +49,7 @@ const init = () => {
 		if (open) {
 			previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
 			requestAnimationFrame(() => {
-				const firstFocusable = nav.querySelector<HTMLElement>(focusSelectors);
+				const firstFocusable = nav.querySelector(focusSelectors);
 				firstFocusable?.focus();
 			});
 		} else if (previousFocus) {
@@ -82,7 +82,9 @@ const init = () => {
 			return;
 		}
 		if (event.key === 'Tab') {
-			const focusables = Array.from(header.querySelectorAll<HTMLElement>(focusSelectors)).filter((el) => el.offsetParent !== null || el === toggle);
+			const focusables = Array.from(header.querySelectorAll(focusSelectors)).filter(
+				(el) => el.offsetParent !== null || el === toggle
+			);
 			if (focusables.length === 0) return;
 			const first = focusables[0];
 			const last = focusables[focusables.length - 1];
@@ -99,7 +101,9 @@ const init = () => {
 
 	document.addEventListener('focusin', (event) => {
 		if (!isOpen()) return;
-		if (!header.contains(event.target as Node)) {
+		const target = event.target;
+		if (!(target instanceof Node)) return;
+		if (!header.contains(target)) {
 			closeMenu();
 		}
 	});

@@ -8,7 +8,7 @@ import Logo from './Logo.astro';
 import { sortedNavigationLinks } from '../lib/nav';
 
 import '../assets/css/components/header.css';
-import menuUrl from '../assets/js/menu.ts?url';
+import menuUrl from '../scripts/menu.js?url';
 const navId = 'primary-navigation';
 ---
 <a class="skip-link" href="#main">Skip to content</a>
@@ -23,4 +23,6 @@ const navId = 'primary-navigation';
 		<Hamburguer targetId={navId} />
 	</div>
 </header>
-<script type="module" src={menuUrl}></script>
+<script>
+	import '../scripts/menu.js';
+</script>

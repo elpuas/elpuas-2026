@@ -14,7 +14,7 @@ import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 
 import Button from './Button.astro';
-import animateBoxScript from '../assets/js/animate-box.ts?url';
+import animateBoxScript from '../scripts/animate-box.js?url';
 
 interface Props {
   title: string;
@@ -126,4 +126,6 @@ const showCta = Boolean(ctaLabel && ctaHref);
   }
 </style>
 
-{displayImage && <script type="module" src={animateBoxScript}></script>}
+<script>
+    import '../scripts/animate-box';
+</script>

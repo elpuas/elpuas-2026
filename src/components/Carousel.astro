@@ -5,7 +5,7 @@
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import '../assets/css/components/carousel.css';
-import carouselScript from '../assets/js/carousel.ts?url';
+// import carouselScript from '../scripts/carousel.js?url';
 
 type SlideImage = ImageMetadata | string;
 
@@ -195,4 +195,6 @@ const liveRegion = options.autoplay ? 'polite' : undefined;
 	</div>
 </section>
 
-<script type="module" src={carouselScript}></script>
+<script>
+	import('../scripts/carousel.js');
+</script>
