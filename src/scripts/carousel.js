@@ -1,26 +1,9 @@
-/**
- * Client-side initializer for Carousel.astro using Swiper.
- */
-import type { SwiperOptions, NavigationOptions } from 'swiper/types'
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-let SwiperCtor: typeof import('swiper').Swiper | undefined;
-let moduleCache: typeof import('swiper/modules') | undefined;
-
-type CarouselOptions = {
-	autoplay?: number;
-	loop?: boolean;
-	slidesPerView?: number | 'auto';
-	spaceBetween?: number;
-	centeredSlides?: boolean;
-	centered?: boolean;
-	showArrows?: boolean;
-	showPagination?: boolean;
-	breakpoints?: SwiperOptions['breakpoints'];
-	initialSlide?: number;
-};
+let SwiperCtor;
+let moduleCache;
 
 const loadSwiper = async () => {
 	if (SwiperCtor && moduleCache) {
@@ -35,17 +18,17 @@ const loadSwiper = async () => {
 	return { Swiper, modules };
 };
 
-const parseOptions = (value?: string): CarouselOptions => {
+const parseOptions = (value) => {
 	if (!value) return {};
 	try {
-		return JSON.parse(value) as CarouselOptions;
+		return JSON.parse(value);
 	} catch (error) {
 		console.warn('Carousel: failed to parse options', error);
 		return {};
 	}
 };
 
-const initCarousel = async (root: HTMLElement) => {
+const initCarousel = async (root) => {
 	if (root.dataset.carouselBound === 'true') return;
 	root.dataset.carouselBound = 'true';
 
@@ -53,24 +36,23 @@ const initCarousel = async (root: HTMLElement) => {
 	const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 	const optionsData = parseOptions(root.dataset.carouselOptions);
 	const { Navigation, Pagination, A11y, Autoplay } = modules;
-	const moduleList = [Navigation, Pagination, A11y];
+	const moduleList = [Navigation, Pagination, A11y].filter(Boolean);
 	const autoplayDelay = optionsData.autoplay ?? 0;
 	const autoplayEnabled = Boolean(autoplayDelay) && !prefersReducedMotion.matches;
 	if (autoplayDelay && Autoplay) {
 		moduleList.push(Autoplay);
 	}
-	const swiperEl = root.querySelector<HTMLElement>('.swiper');
+	const swiperEl = root.querySelector('.swiper');
 	if (!swiperEl) return;
 
-	const prevEl = root.querySelector<HTMLElement>('[data-carousel-prev]') || undefined;
-	const nextEl = root.querySelector<HTMLElement>('[data-carousel-next]') || undefined;
-	const paginationEl = root.querySelector<HTMLElement>('[data-carousel-pagination]') || undefined;
-	const navigationOpts: NavigationOptions | false = optionsData.showArrows && prevEl && nextEl
+	const prevEl = root.querySelector('[data-carousel-prev]') || undefined;
+	const nextEl = root.querySelector('[data-carousel-next]') || undefined;
+	const paginationEl = root.querySelector('[data-carousel-pagination]') || undefined;
+	const navigationOpts = optionsData.showArrows && prevEl && nextEl
 		? { prevEl, nextEl }
 		: false;
-	// Swiper expects false (not undefined) to disable navigation cleanly
 
-	const config: SwiperOptions = {
+	const config = {
 		modules: moduleList,
 		initialSlide: typeof optionsData.initialSlide === 'number' ? optionsData.initialSlide : 0,
 		loop: Boolean(optionsData.loop),
@@ -118,16 +100,18 @@ const initCarousel = async (root: HTMLElement) => {
 
 const initAll = () => {
 	document
-		.querySelectorAll<HTMLElement>('[data-carousel-root]')
+		.querySelectorAll('[data-carousel-root]')
 		.forEach((root) => {
 			initCarousel(root).catch((error) => console.error('Carousel init failed', error));
 		});
 };
 
-if (document.readyState === 'loading') {
-	document.addEventListener('DOMContentLoaded', initAll, { once: true });
-} else {
-	initAll();
-}
+if (typeof document !== 'undefined') {
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initAll, { once: true });
+	} else {
+		initAll();
+	}
 
-document.addEventListener('astro:after-swap', initAll);
+	document.addEventListener('astro:after-swap', initAll);
+}
