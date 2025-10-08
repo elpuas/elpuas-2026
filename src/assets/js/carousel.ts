@@ -1,13 +1,26 @@
 /**
  * Client-side initializer for Carousel.astro using Swiper.
  */
-import type { SwiperOptions } from 'swiper';
+import type { SwiperOptions, NavigationOptions } from 'swiper/types'
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 let SwiperCtor: typeof import('swiper').Swiper | undefined;
 let moduleCache: typeof import('swiper/modules') | undefined;
+
+type CarouselOptions = {
+	autoplay?: number;
+	loop?: boolean;
+	slidesPerView?: number | 'auto';
+	spaceBetween?: number;
+	centeredSlides?: boolean;
+	centered?: boolean;
+	showArrows?: boolean;
+	showPagination?: boolean;
+	breakpoints?: SwiperOptions['breakpoints'];
+	initialSlide?: number;
+};
 
 const loadSwiper = async () => {
 	if (SwiperCtor && moduleCache) {
@@ -22,10 +35,10 @@ const loadSwiper = async () => {
 	return { Swiper, modules };
 };
 
-const parseOptions = (value?: string) => {
+const parseOptions = (value?: string): CarouselOptions => {
 	if (!value) return {};
 	try {
-		return JSON.parse(value);
+		return JSON.parse(value) as CarouselOptions;
 	} catch (error) {
 		console.warn('Carousel: failed to parse options', error);
 		return {};
@@ -41,28 +54,32 @@ const initCarousel = async (root: HTMLElement) => {
 	const optionsData = parseOptions(root.dataset.carouselOptions);
 	const { Navigation, Pagination, A11y, Autoplay } = modules;
 	const moduleList = [Navigation, Pagination, A11y];
-	const autoplayDelay = optionsData.autoplay ?? null;
+	const autoplayDelay = optionsData.autoplay ?? 0;
 	const autoplayEnabled = Boolean(autoplayDelay) && !prefersReducedMotion.matches;
 	if (autoplayDelay && Autoplay) {
 		moduleList.push(Autoplay);
 	}
-	Swiper.use(moduleList);
-
 	const swiperEl = root.querySelector<HTMLElement>('.swiper');
 	if (!swiperEl) return;
 
 	const prevEl = root.querySelector<HTMLElement>('[data-carousel-prev]') || undefined;
 	const nextEl = root.querySelector<HTMLElement>('[data-carousel-next]') || undefined;
 	const paginationEl = root.querySelector<HTMLElement>('[data-carousel-pagination]') || undefined;
+	const navigationOpts: NavigationOptions | false = optionsData.showArrows && prevEl && nextEl
+		? { prevEl, nextEl }
+		: false;
+	// Swiper expects false (not undefined) to disable navigation cleanly
 
 	const config: SwiperOptions = {
+		modules: moduleList,
+		initialSlide: typeof optionsData.initialSlide === 'number' ? optionsData.initialSlide : 0,
 		loop: Boolean(optionsData.loop),
 		slidesPerView: optionsData.slidesPerView ?? 1,
 		spaceBetween: optionsData.spaceBetween ?? 0,
-		centeredSlides: Boolean(optionsData.centered),
+		centeredSlides: Boolean(optionsData.centeredSlides ?? optionsData.centered),
+		navigation: navigationOpts,
 		breakpoints: optionsData.breakpoints,
 		a11y: { enabled: true },
-		navigation: optionsData.showArrows && prevEl && nextEl ? { prevEl, nextEl } : undefined,
 		pagination: optionsData.showPagination && paginationEl
 			? {
 				el: paginationEl,

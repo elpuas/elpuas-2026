@@ -59,6 +59,7 @@ type DatoArticleRecord = {
 	}[]
 	content?: (DatoParagraphBlock | DatoCodeBlock | DatoContentWithImageBlock | DatoGalleryBlock | DatoImageBlock)[]
 	_seoMetaTags?: {
+		tag?: string
 		attributes?: Record<string, string>
 		content?: string
 	}[]
@@ -77,6 +78,7 @@ const ARTICLES_QUERY = `
 					src
 					height
 					width
+					alt
 				}
 				title
 			}
@@ -127,6 +129,7 @@ const ARTICLES_QUERY = `
 			articleAuthor
 			articleDisplayDate
 			_seoMetaTags {
+				tag
 				attributes
 				content
 			}
@@ -172,3 +175,49 @@ export async function getAllArticles(): Promise<DatoArticleRecord[]> {
 }
 
 export const renderMetaTags = renderMetaTagsToString
+
+type SeoMetaTag = {
+	tag?: string
+	attributes?: Record<string, string>
+	content?: string
+}
+
+export function getSeoDescription(metaTags: SeoMetaTag[] = []): string {
+	const extractContent = (meta?: SeoMetaTag) => {
+		if (!meta) return ''
+		return meta.content || meta.attributes?.content || ''
+	}
+
+	for (const meta of metaTags) {
+		const tagName = meta?.tag?.toLowerCase()
+		const nameAttr = meta?.attributes?.name?.toLowerCase()
+		if (tagName === 'meta' && nameAttr === 'description') {
+			const content = extractContent(meta)
+			if (content) return content
+		}
+	}
+
+	for (const meta of metaTags) {
+		const tagName = meta?.tag?.toLowerCase()
+		const propertyAttr = meta?.attributes?.property?.toLowerCase()
+		if (tagName === 'meta' && propertyAttr === 'og:description') {
+			const content = extractContent(meta)
+			if (content) return content
+		}
+	}
+
+	for (const meta of metaTags) {
+		const tagName = meta?.tag?.toLowerCase()
+		const nameAttr = meta?.attributes?.name?.toLowerCase()
+		if (tagName === 'meta' && nameAttr === 'twitter:description') {
+			const content = extractContent(meta)
+			if (content) return content
+		}
+	}
+
+	return ''
+}
+
+export const getExcerpt = getSeoDescription
+
+export type { DatoArticleRecord }

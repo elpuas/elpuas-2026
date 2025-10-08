@@ -1,6 +1,8 @@
 ---
 /**
- * BaseVideo renders a responsive HTML5 video with accessible defaults.
+ * Video renders a responsive HTML5 video with accessible defaults.
+ * Set `visibilityAutoplay` to true to tag the player for intersection-based autoplay
+ * with forced muted/inline/loop behaviour and no controls.
  */
 import '../assets/css/components/video.css';
 
@@ -15,6 +17,7 @@ interface Props {
 	autoplay?: boolean;
 	ariaLabel?: string;
 	caption?: string;
+	visibilityAutoplay?: boolean;
 }
 
 const {
@@ -27,24 +30,27 @@ const {
 	loop = false,
 	autoplay = false,
 	ariaLabel,
-	caption
+	caption,
+	visibilityAutoplay = false
 } = Astro.props as Props;
 
 if (!srcWebm) {
-	throw new Error('BaseVideo requires a srcWebm prop pointing to a .webm asset');
+	throw new Error('Video requires a srcWebm prop pointing to a .webm asset');
 }
 
-const mutedAttr = muted !== false;
-const playsInlineAttr = playsInline !== false;
+const visibilityAutoplayAttr = Boolean(visibilityAutoplay);
+const mutedAttr = visibilityAutoplayAttr ? true : muted !== false;
+const playsInlineAttr = visibilityAutoplayAttr ? true : playsInline !== false;
 const autoplayAttr = Boolean(autoplay);
-const controlsAttr = Boolean(controls);
-const loopAttr = Boolean(loop);
+const controlsAttr = visibilityAutoplayAttr ? false : Boolean(controls);
+const loopAttr = visibilityAutoplayAttr ? true : Boolean(loop);
 const regionLabel = ariaLabel || 'Video content';
 ---
 <section class="video-section" role="region" aria-label={regionLabel}>
 	<div class="video-frame">
 		<video
 			preload="metadata"
+			data-autoplay={visibilityAutoplayAttr ? 'visibility' : undefined}
 			muted={mutedAttr ? true : undefined}
 			playsinline={playsInlineAttr ? true : undefined}
 			loop={loopAttr ? true : undefined}

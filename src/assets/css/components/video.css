@@ -1,4 +1,4 @@
-/* BaseVideo layout: responsive wrapper respecting dark/light tokens */
+/* Video layout: responsive wrapper respecting dark/light tokens */
 .video-section {
 	display: block;
 	width: 100%;
@@ -11,12 +11,9 @@
 .video-frame {
 	position: relative;
 	width: 100%;
-	max-width: var(--wide-width, 1200px);
+	max-width: var(--wide-width);
 	margin: 0 auto;
 	overflow: hidden;
-	border-radius: var(--radius-lg, 1.25rem);
-	background: var(--secondary-color, #111);
-	aspect-ratio: 16 / 9;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -37,21 +34,12 @@
 .video-caption {
 	margin-top: calc(var(--padding-base, 32px) / 4);
 	font-size: clamp(0.95rem, 0.85rem + 0.3vw, 1.1rem);
-	color: var(--secondary-color, #111);
+	color: var(--secondary-color);
 }
 
 @media (prefers-color-scheme: dark) {
-	.video-section {
-		background: var(--secondary-color, #111);
-		color: var(--primary-color, #d8ff00);
-	}
-
-	.video-frame {
-		background: rgba(255, 255, 255, 0.05);
-	}
-
 	.video-caption {
-		color: var(--primary-color, #d8ff00);
+		color: var(--primary-color);
 	}
 }
 

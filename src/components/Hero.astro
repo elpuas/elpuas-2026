@@ -4,8 +4,8 @@
  * <Hero
  *   title="I code digital crafts for humans."
  *   subtitle="I specialize in modern WordPress development and JAMStack architectures."
- *   ctaLabel="Let's talk"
- *   ctaHref="/lets-talk"
+ *   ctaLabel="Let's talk" // optional
+ *   ctaHref="/lets-talk"   // optional
  *   image={heroImage}
  *   showImage
  * />
@@ -19,8 +19,8 @@ import animateBoxScript from '../assets/js/animate-box.ts?url';
 interface Props {
   title: string;
   subtitle?: string;
-  ctaLabel: string;
-  ctaHref: string;
+  ctaLabel?: string;
+  ctaHref?: string;
   ctaVariant?: 'outline' | 'primary';
   ctaAriaLabel?: string;
   ctaNewTab?: boolean;
@@ -44,6 +44,7 @@ const {
 
 const displayImage = Boolean(showImage && image);
 const altText = imageAlt ?? title;
+const showCta = Boolean(ctaLabel && ctaHref);
 ---
 <section class="hero">
   <div class="hero__content">
@@ -54,7 +55,15 @@ const altText = imageAlt ?? title;
       </div>
     )}
     {subtitle && <h2 class="entry-subtitle">{subtitle}</h2>}
-    <Button label={ctaLabel} href={ctaHref} variant={ctaVariant} ariaLabel={ctaAriaLabel} newTab={ctaNewTab} />
+    {showCta && (
+      <Button
+        label={ctaLabel!}
+        href={ctaHref!}
+        variant={ctaVariant}
+        ariaLabel={ctaAriaLabel}
+        newTab={ctaNewTab}
+      />
+    )}
   </div>
 </section>
 

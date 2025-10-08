@@ -1,0 +1,35 @@
+section:is(.with-scroll-video) {
+    margin-top: var(--section-padding, 96px);
+    margin-bottom: var(--section-padding, 96px);
+
+    .scroll-video-container {
+        aspect-ratio: 9 / 16;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        gap: calc(var(--padding-base, 32px) / 2);
+
+        h3 {
+            font-weight: 600;
+        }
+
+        > * {
+            margin: 0;
+        }
+    }
+
+    .button {
+        align-self: start;
+        max-width: fit-content;
+    }
+
+    .video-frame {
+        aspect-ratio: 9 / 16;
+    }
+
+    &.columns {
+        align-items: center;
+    }
+}

@@ -44,4 +44,10 @@ footer {
             }
         }
     }
+
+    .footer__social-copyrights {
+        display: flex;
+        flex-direction: row;
+        gap: 16px;
+    }
 }
